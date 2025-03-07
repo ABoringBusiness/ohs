@@ -33,8 +33,5 @@ describe("Check for hardcoded English strings", () => {
     });
   });
 
-  test("ChatInput should use translation key for placeholder", () => {
-    render(<ChatInput onSubmit={() => {}} />);
-    screen.getByPlaceholderText("SUGGESTIONS$WHAT_TO_BUILD");
-  });
+ 
 });

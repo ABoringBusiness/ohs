@@ -1,5 +1,4 @@
 import { useTranslation } from "react-i18next";
-import ArrowSendIcon from "#/icons/arrow-send.svg?react";
 import { I18nKey } from "#/i18n/declaration";
 
 interface SubmitButtonProps {
@@ -15,9 +14,13 @@ export function SubmitButton({ isDisabled, onClick }: SubmitButtonProps) {
       disabled={isDisabled}
       onClick={onClick}
       type="submit"
-      className="border border-white rounded-lg w-6 h-6 hover:bg-neutral-500 focus:bg-neutral-500 flex items-center justify-center"
+      className="border border-none rounded-lg h-8 w-8 bg-neutral-700 focus:bg-neutral-500 flex items-center justify-center "
     >
-      <ArrowSendIcon />
+      <img
+        src="/test/sendicon.png"
+        className="filter invert brightness-200 h-4 w-4"
+        alt="sendIcon"
+      />
     </button>
   );
 }

@@ -6,7 +6,6 @@ import toast from "react-hot-toast";
 import { NavLink, useLocation } from "react-router";
 import { useGitHubUser } from "#/hooks/query/use-github-user";
 import { UserActions } from "./user-actions";
-import { AllHandsLogoButton } from "#/components/shared/buttons/all-hands-logo-button";
 import { DocsButton } from "#/components/shared/buttons/docs-button";
 import { ExitProjectButton } from "#/components/shared/buttons/exit-project-button";
 import { SettingsButton } from "#/components/shared/buttons/settings-button";
@@ -79,12 +78,9 @@ export function Sidebar() {
 
   return (
     <>
-      <aside className="h-[40px] md:h-auto px-1 flex flex-row md:flex-col gap-1">
+      <aside className="h-[40px] md:h-auto px-1 flex flex-row  border-r-2 border-[#19191b] md:flex-col gap-1">
         <nav className="flex flex-row md:flex-col items-center justify-between w-full h-auto md:w-auto md:h-full">
-          <div className="flex flex-row md:flex-col items-center gap-[26px]">
-            <div className="flex items-center justify-center">
-              <AllHandsLogoButton onClick={handleEndSession} />
-            </div>
+          <div className="flex flex-row md:flex-col pt-2 items-center gap-[26px]">
             <ExitProjectButton onClick={handleEndSession} />
             <TooltipButton
               testId="toggle-conversation-panel"

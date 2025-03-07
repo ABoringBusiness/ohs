@@ -3,6 +3,7 @@
   "parserOptions": {
     "project": "./tsconfig.json"
   },
+ 
   "extends": [
     "airbnb",
     "airbnb-typescript",
@@ -20,6 +21,7 @@
     "prettier/prettier": [
       "error"
     ],
+    "react/jsx-props-no-spreading": "off",
     // Resolves https://stackoverflow.com/questions/59265981/typescript-eslint-missing-file-extension-ts-import-extensions/59268871#59268871
     "import/extensions": [
       "error",

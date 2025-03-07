@@ -2,7 +2,6 @@ import React from "react";
 import { ChatInput } from "./chat-input";
 import { cn } from "#/utils/utils";
 import { ImageCarousel } from "../images/image-carousel";
-import { UploadImageInput } from "../images/upload-image-input";
 
 interface InteractiveChatBoxProps {
   isDisabled?: boolean;
@@ -46,7 +45,7 @@ export function InteractiveChatBox({
   return (
     <div
       data-testid="interactive-chat-box"
-      className="flex flex-col gap-[10px]"
+      className="flex flex-col gap-[10px]  px-2  py-1 border-t-2 border-[#18181a]"
     >
       {images.length > 0 && (
         <ImageCarousel
@@ -59,22 +58,20 @@ export function InteractiveChatBox({
       <div
         className={cn(
           "flex items-end gap-1",
-          "bg-tertiary border border-neutral-600 rounded-lg px-2",
+          "bg-[#272729] border-none rounded-lg px-2",
           "transition-colors duration-200",
-          "hover:border-neutral-500 focus-within:border-neutral-500",
         )}
       >
-        <UploadImageInput onUpload={handleUpload} />
         <ChatInput
           disabled={isDisabled}
           button={mode}
           onChange={onChange}
           onSubmit={handleSubmit}
           onStop={onStop}
+          onUpload={handleUpload}
           value={value}
           onImagePaste={handleUpload}
           className="py-[10px]"
-          buttonClassName="py-[10px]"
         />
       </div>
     </div>

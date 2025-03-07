@@ -91,7 +91,7 @@ export default function MainApp() {
   return (
     <div
       data-testid="root-layout"
-      className="bg-base p-3 h-screen md:min-w-[1024px] overflow-x-hidden flex flex-col md:flex-row gap-3"
+      className="bg-[#09090b] relative  h-screen md:min-w-[1024px] overflow-x-hidden flex flex-col md:flex-row"
     >
       <Sidebar />
 
@@ -116,6 +116,13 @@ export default function MainApp() {
           }}
         />
       )}
+      <div className="h-[40px] w-[40px] absolute bottom-[120px] right-[30px] rounded-full flex justify-center items-center bg-[#272729]">
+        <img
+          src="/test/speech.png"
+          className="filter invert  brightness-200 h-6 w-6"
+          alt="image-icon"
+        />
+      </div>
     </div>
   );
 }
