@@ -77,6 +77,9 @@ workspace_base = "./workspace"
 # Path to rewrite the workspace mount path to
 #workspace_mount_rewrite = ""
 
+# Storage type: "local", "s3", "google_cloud", "supabase"
+#storage_type = "local"
+
 # Run as openhands
 #run_as_openhands = true
 
