@@ -10,13 +10,18 @@ export default {
     extend: {
       colors: {
         primary: "#C9B974", // nice yellow
-        base: "#0D0F11", // dark background also used for tooltips
-        "base-secondary": "#24272E", // lighter background
+        base: "#d3e3fd", // dark background also used for tooltips
+        "base-dark": "#0D0F11",
+        "base-secondary": "#fff", // lighter background
+        "base-secondary-dark": "#000",
         danger: "#E76A5E",
         success: "#A5E75E",
-        tertiary: "#454545", // gray, used for inputs
-        "tertiary-light": "#B7BDC2", // lighter gray, used for borders and placeholder text
-        content: "#ECEDEE", // light gray, used mostly for text
+        tertiary: "#fff", // gray, used for inputs
+        "tertiary-dark": "#18181A",
+        "tertiary-light": "#707A83", // lighter gray, used for borders and placeholder text
+        "tertiary-light-dark": "#B7BDC2",
+        content: "#F5F5F5", // light gray, used mostly for text
+        "content-dark": "#ECEDEE",
       },
     },
   },

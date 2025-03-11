@@ -55,7 +55,7 @@ export function FileExplorer({ isOpen, onToggle }: FileExplorerProps) {
     <div data-testid="file-explorer" className="relative h-full">
       <div
         className={cn(
-          "bg-base-secondary h-full border-r-1 border-r-neutral-600 flex flex-col",
+          "bg-base-secondary dark:bg-base-secondary-dark h-full border-r-1 border-r-neutral-600 flex flex-col",
           !isOpen ? "w-12" : "w-60",
         )}
       >
@@ -82,7 +82,7 @@ export function FileExplorer({ isOpen, onToggle }: FileExplorerProps) {
               testId="open-vscode-button"
               type="button"
               variant="secondary"
-              className="w-full text-content border-content"
+              className="w-full"
               isDisabled={RUNTIME_INACTIVE_STATES.includes(curAgentState)}
               onClick={handleOpenVSCode}
               startContent={<VSCodeIcon width={20} height={20} />}

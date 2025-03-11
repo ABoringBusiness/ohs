@@ -29,7 +29,7 @@ export function WaitlistModal({
 
   return (
     <ModalBackdrop>
-      <ModalBody className="border border-tertiary">
+      <ModalBody className="border border-tertiary dark:border-tertiary-dark">
         <AllHandsLogo width={68} height={46} />
         <WaitlistMessage content={ghTokenIsSet ? "waitlist" : "sign-in"} />
 

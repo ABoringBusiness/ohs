@@ -23,7 +23,7 @@ export function Container({
   return (
     <div
       className={clsx(
-        "bg-base-secondary border border-neutral-600 rounded-xl flex flex-col",
+        "bg-base-secondary dark:bg-base-secondary-dark border border-neutral-600 rounded-xl flex flex-col",
         className,
       )}
     >

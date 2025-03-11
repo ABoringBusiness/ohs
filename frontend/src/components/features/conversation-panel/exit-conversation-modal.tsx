@@ -25,7 +25,7 @@ export function ExitConversationModal({
           <ModalButton
             text="Cancel"
             onClick={onClose}
-            className="bg-tertiary flex-1"
+            className="bg-tertiary dark:bg-tertiary-dark flex-1"
           />
         </div>
       </ModalBody>
