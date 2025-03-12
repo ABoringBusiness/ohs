@@ -36,6 +36,7 @@ import { TerminalStatusLabel } from "#/components/features/terminal/terminal-sta
 import { useSettings } from "#/hooks/query/use-settings";
 import { clearFiles, clearInitialPrompt } from "#/state/initial-query-slice";
 import { RootState } from "#/store";
+import { MobileLabel } from "#/components/layout/mobile-label";
 
 function AppContent() {
   useConversationConfig();
@@ -150,6 +151,11 @@ function AppContent() {
                   {
                     label: <ServedAppLabel />,
                     to: "served",
+                    icon: <FaServer />,
+                  },
+                  {
+                    label: <MobileLabel />,
+                    to: "mobile",
                     icon: <FaServer />,
                   },
                   {
