@@ -96,7 +96,7 @@ export function ConversationCard({
       data-testid="conversation-card"
       onClick={onClick}
       className={cn(
-        "h-[100px] w-full px-[18px] py-4 border-b border-neutral-600 cursor-pointer",
+        "h-[100px] w-full px-[18px] py-1 border-b border-neutral-600 cursor-pointer",
         variant === "compact" &&
           "h-auto w-fit rounded-xl border border-[#525252]",
       )}
@@ -146,7 +146,7 @@ export function ConversationCard({
               onDelete={onDelete && handleDelete}
               onEdit={onChangeTitle && handleEdit}
               onDownload={onDownloadWorkspace && handleDownload}
-              position={variant === "compact" ? "top" : "bottom"}
+              // position={variant === "compact" ? "top" : "bottom"}
             />
           )}
         </div>

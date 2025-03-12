@@ -26,7 +26,7 @@ export function ActionSuggestions({
   };
 
   return (
-    <div className="flex flex-col gap-2 mb-2">
+    <div className="flex flex-col gap-2 mb-2 bg-white dark:bg-black rounded-2xl">
       <DownloadModal
         initialPath=""
         onClose={handleDownloadClose}

@@ -45,10 +45,10 @@ export function ChatMessage({
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
       className={cn(
-        "rounded-xl relative",
+        "rounded-xl relative text-white dark:text-black",
         "flex flex-col gap-2",
         type === "user" &&
-          " max-w-[305px] p-4 bg-tertiary dark:bg-tertiary-dark self-end",
+          " max-w-[305px] p-4 bg-tertiary dark:bg-tertiary-dark self-end text-black dark:text-white",
         type === "assistant" && "mt-6 max-w-full bg-tranparent",
       )}
     >

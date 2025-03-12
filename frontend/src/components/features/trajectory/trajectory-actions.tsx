@@ -22,19 +22,31 @@ export function TrajectoryActions({
       <TrajectoryActionButton
         testId="positive-feedback"
         onClick={onPositiveFeedback}
-        icon={<ThumbsUpIcon width={15} height={15} />}
+        icon={
+          <ThumbsUpIcon
+            width={15}
+            height={15}
+            className="stroke-white dark:stroke-black"
+          />
+        }
         tooltip={t("BUTTON$MARK_HELPFUL")}
       />
       <TrajectoryActionButton
         testId="negative-feedback"
         onClick={onNegativeFeedback}
-        icon={<ThumbDownIcon width={15} height={15} />}
+        icon={
+          <ThumbDownIcon
+            width={15}
+            height={15}
+            className="stroke-white dark:stroke-black"
+          />
+        }
         tooltip={t("BUTTON$MARK_NOT_HELPFUL")}
       />
       <TrajectoryActionButton
         testId="export-trajectory"
         onClick={onExportTrajectory}
-        icon={<ExportIcon width={15} height={15} />}
+        icon={<ExportIcon width={15} height={15} className="stroke-white" />}
         tooltip={t("BUTTON$EXPORT_CONVERSATION")}
       />
     </div>
