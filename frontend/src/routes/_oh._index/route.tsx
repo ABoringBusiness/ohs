@@ -10,6 +10,7 @@ import { useGitHubAuthUrl } from "#/hooks/use-github-auth-url";
 import { setImportedProjectZip } from "#/state/initial-query-slice";
 import { convertZipToBase64 } from "#/utils/convert-zip-to-base64";
 import { ImportProjectSuggestionBox } from "../../components/features/suggestions/import-project-suggestion-box";
+import HeaderBar from "#/components/layout/header-bar";
 
 function Home() {
   const dispatch = useDispatch();
@@ -25,8 +26,8 @@ function Home() {
 
   return (
     <div className="bg-base-secondary dark:bg-base-secondary-dark h-full rounded-xl flex flex-col items-center justify-center relative overflow-y-auto px-2 ">
-      <header className="px-3 py-1.5 w-full border-b border-b-tertiary dark:border-b-tertiary-dark flex items-center gap-2 justify-self-start absolute top-0">
-        <h1 className="text-sm leading-6">Home</h1>
+      <header className="w-full border-b border-b-tertiary dark:border-b-tertiary-dark flex items-center gap-2 justify-self-start absolute top-0 justify-between">
+        <HeaderBar />
       </header>
       <HeroHeading />
       <div className="flex flex-col gap-8 w-full md:w-[600px] items-center">
