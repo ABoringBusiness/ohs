@@ -1,7 +1,8 @@
 import posthog from "posthog-js";
-import React from "react";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { FaListUl } from "react-icons/fa";
+import { MdArrowForwardIos, MdArrowBackIos } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { NavLink, useLocation } from "react-router";
 import { AllHandsLogoButton } from "#/components/shared/buttons/all-hands-logo-button";
@@ -26,6 +27,7 @@ import { ConversationPanelWrapper } from "../conversation-panel/conversation-pan
 import { UserActions } from "./user-actions";
 
 export function Sidebar() {
+  const [isExpanded, setIsExpanded] = useState(true);
   const location = useLocation();
   const dispatch = useDispatch();
   const endSession = useEndSession();
@@ -40,7 +42,6 @@ export function Sidebar() {
   const { settings, saveUserSettings } = useCurrentSettings();
 
   const [settingsModalIsOpen, setSettingsModalIsOpen] = React.useState(false);
-
   const [conversationPanelIsOpen, setConversationPanelIsOpen] =
     React.useState(false);
 
@@ -52,8 +53,6 @@ export function Sidebar() {
       settingsIsError &&
       settingsError?.status !== 404
     ) {
-      // We don't show toast errors for settings in the global error handler
-      // because we have a special case for 404 errors
       toast.error(
         "Something went wrong while fetching settings. Please reload the page.",
       );
@@ -80,38 +79,62 @@ export function Sidebar() {
 
   return (
     <>
-      <aside className="h-[40px] md:h-auto px-1 flex flex-row md:flex-col gap-1">
-        <nav className="flex flex-row md:flex-col items-center justify-between w-full h-auto md:w-auto md:h-full">
-          <div className="flex flex-row md:flex-col items-center gap-[26px]">
+      <aside
+        className={cn(
+          "h-[40px] md:h-auto px-1 flex flex-row md:flex-col gap-1 transition-all duration-300 ease-in-out",
+          isExpanded ? "md:w-[240px]" : "md:w-[40px]",
+        )}
+      >
+        <nav className="flex flex-row md:flex-col justify-between w-full h-auto md:w-auto md:h-full">
+          <div
+            className={cn(
+              "flex flex-row md:flex-col gap-[26px]",
+              isExpanded ? "items-start" : "items-center",
+            )}
+          >
             <div className="flex items-center justify-center">
               <AllHandsLogoButton onClick={handleEndSession} />
             </div>
-            <ExitProjectButton onClick={handleEndSession} />
-            <TooltipButton
-              testId="toggle-conversation-panel"
-              tooltip="Conversations"
-              ariaLabel="Conversations"
-              onClick={() => setConversationPanelIsOpen((prev) => !prev)}
-            >
-              <FaListUl
-                size={22}
-                className={cn(
-                  conversationPanelIsOpen ? "text-white" : "text-[#9099AC]",
-                )}
-              />
-            </TooltipButton>
-            <DocsButton />
+            <ExitProjectButton
+              onClick={handleEndSession}
+              label={isExpanded ? "Start new project" : undefined}
+            />
+            <div className="flex flex-row items-center justify-start">
+              <TooltipButton
+                testId="toggle-conversation-panel"
+                tooltip="Conversations"
+                ariaLabel="Conversations"
+                onClick={() => setConversationPanelIsOpen((prev) => !prev)}
+              >
+                <div className="flex items-center">
+                  <FaListUl
+                    size={22}
+                    className={cn(
+                      conversationPanelIsOpen ? "text-white" : "text-[#9099AC]",
+                    )}
+                  />
+                  {isExpanded && <span className="ml-2">Conversations</span>}
+                </div>
+              </TooltipButton>
+            </div>
+            <DocsButton label={isExpanded ? "Documentation" : undefined} />
           </div>
 
-          <div className="flex flex-row md:flex-col md:items-center gap-[26px] md:mb-4">
-            <ThemeToggle />
+          <div
+            className={cn(
+              "flex flex-row md:flex-col gap-[26px] md:mb-4",
+              isExpanded ? "items-start" : "items-center",
+            )}
+          >
+            <ThemeToggle label={isExpanded ? "Toggle Theme" : undefined} />
             <NavLink
               to="/settings"
               className={({ isActive }) =>
-                `${isActive ? "text-white" : "text-[#9099AC]"} mt-0.5 md:mt-0`
+                `${isActive ? "text-white" : "text-[#9099AC]"} flex items-center`
               }
             >
               <SettingsButton />
+              {isExpanded && <span className="ml-2">Settings</span>}
             </NavLink>
             {!user.isLoading && (
               <UserActions
@@ -119,6 +142,7 @@ export function Sidebar() {
                   user.data ? { avatar_url: user.data.avatar_url } : undefined
                 }
                 onLogout={handleLogout}
+                label={isExpanded ? "Account Settings" : undefined}
               />
             )}
             {user.isLoading && <LoadingSpinner size="small" />}
@@ -132,6 +156,18 @@ export function Sidebar() {
             />
           </ConversationPanelWrapper>
         )}
+
+        <button
+          type="button"
+          className="p-2 rounded-full self-end justify-center items-center"
+          onClick={() => setIsExpanded((prev) => !prev)}
+        >
+          {isExpanded ? (
+            <MdArrowBackIos size={16} />
+          ) : (
+            <MdArrowForwardIos size={16} />
+          )}
+        </button>
       </aside>
 
       {settingsModalIsOpen && (

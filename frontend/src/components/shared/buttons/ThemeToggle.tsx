@@ -2,7 +2,11 @@ import { useEffect, useState } from "react";
 import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
 import { TooltipButton } from "./tooltip-button";
 
-export default function ThemeToggle() {
+interface ThemeToggleProps {
+  label?: string;
+}
+
+export default function ThemeToggle({ label }: ThemeToggleProps) {
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
@@ -26,17 +30,22 @@ export default function ThemeToggle() {
   }, [darkMode]);
 
   return (
-    <TooltipButton
-      testId="Toggle Theme"
-      tooltip="Toggle Theme"
-      ariaLabel="Toggle Theme"
-      onClick={() => setDarkMode(!darkMode)}
-    >
-      {darkMode ? (
-        <MdOutlineLightMode size={24} />
-      ) : (
-        <MdOutlineDarkMode size={24} fill="#9099ac" />
-      )}
-    </TooltipButton>
+    <div className="flex items-center">
+      <TooltipButton
+        testId="Toggle Theme"
+        tooltip="Toggle Theme"
+        ariaLabel="Toggle Theme"
+        onClick={() => setDarkMode(!darkMode)}
+      >
+        <div className="flex items-center">
+          {darkMode ? (
+            <MdOutlineLightMode size={24} />
+          ) : (
+            <MdOutlineDarkMode size={24} fill="#9099ac" />
+          )}
+          {label && <span className="ml-2">{label}</span>}
+        </div>
+      </TooltipButton>
+    </div>
   );
 }
