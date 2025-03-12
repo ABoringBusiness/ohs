@@ -1,15 +1,16 @@
+import posthog from "posthog-js";
 import React from "react";
 import { useDispatch } from "react-redux";
-import posthog from "posthog-js";
-import { setImportedProjectZip } from "#/state/initial-query-slice";
-import { convertZipToBase64 } from "#/utils/convert-zip-to-base64";
-import { useGitHubUser } from "#/hooks/query/use-github-user";
-import { useGitHubAuthUrl } from "#/hooks/use-github-auth-url";
-import { useConfig } from "#/hooks/query/use-config";
-import { ImportProjectSuggestionBox } from "../../components/features/suggestions/import-project-suggestion-box";
 import { GitHubRepositoriesSuggestionBox } from "#/components/features/github/github-repositories-suggestion-box";
 import { HeroHeading } from "#/components/shared/hero-heading";
 import { TaskForm } from "#/components/shared/task-form";
+import { useConfig } from "#/hooks/query/use-config";
+import { useGitHubUser } from "#/hooks/query/use-github-user";
+import { useGitHubAuthUrl } from "#/hooks/use-github-auth-url";
+import { setImportedProjectZip } from "#/state/initial-query-slice";
+import { convertZipToBase64 } from "#/utils/convert-zip-to-base64";
+import { ImportProjectSuggestionBox } from "../../components/features/suggestions/import-project-suggestion-box";
+import HeaderBar from "#/components/layout/header-bar";
 
 function Home() {
   const dispatch = useDispatch();
@@ -24,7 +25,10 @@ function Home() {
   });
 
   return (
-    <div className="bg-base-secondary h-full rounded-xl flex flex-col items-center justify-center relative overflow-y-auto px-2">
+    <div className="bg-base-secondary dark:bg-base-secondary-dark h-full rounded-xl flex flex-col items-center justify-center relative overflow-y-auto px-2 ">
+      <header className="w-full border-b border-b-tertiary dark:border-b-tertiary-dark flex items-center gap-2 justify-self-start absolute top-0 justify-between">
+        <HeaderBar />
+      </header>
       <HeroHeading />
       <div className="flex flex-col gap-8 w-full md:w-[600px] items-center">
         <div className="flex flex-col gap-2 w-full">

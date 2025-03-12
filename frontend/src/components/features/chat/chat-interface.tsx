@@ -120,7 +120,7 @@ export function ChatInterface() {
     curAgentState === AgentState.FINISHED;
 
   return (
-    <div className="h-full flex flex-col justify-between">
+    <div className="h-full flex flex-col justify-between bg-base-secondary-dark dark:bg-base-secondary">
       {messages.length === 0 && (
         <ChatSuggestions onSuggestionsClick={setMessageToSend} />
       )}
@@ -128,7 +128,7 @@ export function ChatInterface() {
       <div
         ref={scrollRef}
         onScroll={(e) => onChatBodyScroll(e.currentTarget)}
-        className="flex flex-col grow overflow-y-auto overflow-x-hidden px-4 pt-4 gap-2"
+        className="flex flex-col grow overflow-y-auto overflow-x-hidden px-4 pt-4 gap-2 "
       >
         {isLoadingMessages && (
           <div className="flex justify-center">

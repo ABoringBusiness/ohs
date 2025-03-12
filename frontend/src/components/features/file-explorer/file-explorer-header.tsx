@@ -19,7 +19,7 @@ export function FileExplorerHeader({
   return (
     <div
       className={cn(
-        "sticky top-0 bg-base-secondary",
+        "sticky top-0 bg-base-secondary dark:bg-base-secondary-dark",
         "flex items-center",
         !isOpen ? "justify-center" : "justify-between",
       )}

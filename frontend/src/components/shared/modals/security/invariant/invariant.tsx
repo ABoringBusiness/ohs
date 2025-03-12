@@ -161,7 +161,7 @@ function SecurityInvariant() {
         <div className="flex justify-between items-center border-b border-neutral-600 mb-4 p-4">
           <h2 className="text-2xl">{t(I18nKey.INVARIANT$POLICY_LABEL)}</h2>
           <Button
-            className="bg-tertiary"
+            className="bg-tertiary dark:bg-tertiary-dark"
             onPress={() => updatePolicy({ policy })}
           >
             {t(I18nKey.INVARIANT$UPDATE_POLICY_LABEL)}
@@ -183,7 +183,7 @@ function SecurityInvariant() {
         <div className="flex justify-between items-center border-b border-neutral-600 mb-4 p-4">
           <h2 className="text-2xl">{t(I18nKey.INVARIANT$SETTINGS_LABEL)}</h2>
           <Button
-            className="bg-tertiary"
+            className="bg-tertiary dark:bg-tertiary-dark"
             onPress={() => updateRiskSeverity({ riskSeverity: selectedRisk })}
           >
             {t(I18nKey.INVARIANT$UPDATE_SETTINGS_LABEL)}
@@ -247,7 +247,7 @@ function SecurityInvariant() {
 
   return (
     <div className="flex flex-1 w-full h-full">
-      <div className="w-60 bg-base-secondary border-r border-r-neutral-600 p-4 flex-shrink-0">
+      <div className="w-60 bg-base-secondary dark:bg-base-secondary-dark border-r border-r-neutral-600 p-4 flex-shrink-0">
         <div className="text-center mb-2">
           <InvariantLogoIcon className="mx-auto mb-1" />
           <b>{t(I18nKey.INVARIANT$INVARIANT_ANALYZER_LABEL)}</b>

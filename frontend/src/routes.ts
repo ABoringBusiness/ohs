@@ -17,6 +17,7 @@ export default [
       route("browser", "routes/_oh.app.browser.tsx"),
       route("jupyter", "routes/_oh.app.jupyter.tsx"),
       route("served", "routes/app.tsx"),
+      route("mobile", "routes/mobile.tsx"),
     ]),
   ]),
 ] satisfies RouteConfig;

@@ -3,15 +3,24 @@ import DocsIcon from "#/icons/academy.svg?react";
 import { I18nKey } from "#/i18n/declaration";
 import { TooltipButton } from "./tooltip-button";
 
-export function DocsButton() {
+interface DocsButtonProps {
+  label?: string;
+}
+
+export function DocsButton({ label }: DocsButtonProps) {
   const { t } = useTranslation();
   return (
-    <TooltipButton
-      tooltip={t(I18nKey.SIDEBAR$DOCS)}
-      ariaLabel={t(I18nKey.SIDEBAR$DOCS)}
-      href="https://docs.all-hands.dev"
-    >
-      <DocsIcon width={28} height={28} className="text-[#9099AC]" />
-    </TooltipButton>
+    <div className="flex items-center">
+      <TooltipButton
+        tooltip={t(I18nKey.SIDEBAR$DOCS)}
+        ariaLabel={t(I18nKey.SIDEBAR$DOCS)}
+        href="https://docs.all-hands.dev"
+      >
+        <div className="flex items-center">
+          <DocsIcon width={28} height={28} className="text-[#9099AC]" />
+          {label && <span className="ml-2">{label}</span>}
+        </div>
+      </TooltipButton>
+    </div>
   );
 }

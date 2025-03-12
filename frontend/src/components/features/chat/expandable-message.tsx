@@ -67,12 +67,12 @@ export function ExpandableMessage({
   return (
     <div
       className={cn(
-        "flex gap-2 items-center justify-start border-l-2 pl-2 my-2 py-2",
+        "flex gap-2 items-center justify-start border-l-2 pl-2 my-2 py-2 text-white dark:text-black",
         type === "error" ? "border-danger" : "border-neutral-300",
       )}
     >
       <div className="text-sm w-full">
-        <div className="flex flex-row justify-between items-center w-full">
+        <div className="flex flex-row justify-between items-center w-full ">
           <span
             className={cn(
               headline ? "font-bold" : "",
@@ -80,8 +80,8 @@ export function ExpandableMessage({
             )}
           >
             {headline && (
-              <>
-                {headline}
+              <div className="flex flex-row items-center">
+                <p className="text-white dark:text-black">{headline}</p>
                 <button
                   type="button"
                   onClick={() => setShowDetails(!showDetails)}
@@ -103,7 +103,7 @@ export function ExpandableMessage({
                     />
                   )}
                 </button>
-              </>
+              </div>
             )}
           </span>
           {type === "action" && success !== undefined && (

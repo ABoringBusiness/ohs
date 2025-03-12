@@ -13,13 +13,15 @@ export function StyledSwitchComponent({
         "w-12 h-6 rounded-xl flex items-center p-1.5 cursor-pointer",
         isToggled && "justify-end bg-primary",
         !isToggled &&
-          "justify-start bg-base-secondary border border-tertiary-light",
+          "justify-start bg-base-secondary dark:bg-base-secondary-dark border border-tertiary-light dark:border-tertiary-light-dark ",
       )}
     >
       <div
         className={cn(
           "w-3 h-3 rounded-xl",
-          isToggled ? "bg-base-secondary" : "bg-tertiary-light",
+          isToggled
+            ? "bg-base-secondary dark:bg-base-secondary-dark"
+            : "bg-tertiary-light dark:bg-tertiary-light-dark ",
         )}
       />
     </div>

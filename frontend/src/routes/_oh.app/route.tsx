@@ -1,10 +1,11 @@
 import { useDisclosure } from "@heroui/react";
-import React from "react";
+import React, { useState } from "react";
 import { Outlet } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { FaServer } from "react-icons/fa";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
+import { BsReverseLayoutTextWindowReverse } from "react-icons/bs";
 import { I18nKey } from "#/i18n/declaration";
 import {
   ConversationProvider,
@@ -36,6 +37,8 @@ import { TerminalStatusLabel } from "#/components/features/terminal/terminal-sta
 import { useSettings } from "#/hooks/query/use-settings";
 import { clearFiles, clearInitialPrompt } from "#/state/initial-query-slice";
 import { RootState } from "#/store";
+import { MobileLabel } from "#/components/layout/mobile-label";
+import { TooltipButton } from "#/components/shared/buttons/tooltip-button";
 
 function AppContent() {
   useConversationConfig();
@@ -48,6 +51,7 @@ function AppContent() {
   const { initialPrompt, files } = useSelector(
     (state: RootState) => state.initialQuery,
   );
+  const [isReversed, setIsReversed] = useState(true);
   const dispatch = useDispatch();
   const endSession = useEndSession();
 
@@ -125,9 +129,9 @@ function AppContent() {
     return (
       <ResizablePanel
         orientation={Orientation.HORIZONTAL}
-        className="grow h-full min-h-0 min-w-0"
+        className={`grow h-full min-h-0 min-w-0 ${isReversed ? "flex-row-reverse" : ""}`}
         initialSize={500}
-        firstClassName="rounded-xl overflow-hidden border border-neutral-600 bg-base-secondary"
+        firstClassName="rounded-xl overflow-hidden border border-neutral-600 bg-base-secondary dark:bg-base-secondary-dark"
         secondClassName="flex flex-col overflow-hidden"
         firstChild={<ChatInterface />}
         secondChild={
@@ -150,6 +154,11 @@ function AppContent() {
                   {
                     label: <ServedAppLabel />,
                     to: "served",
+                    icon: <FaServer />,
+                  },
+                  {
+                    label: <MobileLabel />,
+                    to: "mobile",
                     icon: <FaServer />,
                   },
                   {
@@ -190,12 +199,23 @@ function AppContent() {
     <WsClientProvider conversationId={conversationId}>
       <EventHandler>
         <div data-testid="app-route" className="flex flex-col h-full gap-3">
+          <div className="flex flex-row items-center gap-4">
+            <Controls
+              setSecurityOpen={onSecurityModalOpen}
+              showSecurityLock={!!settings?.SECURITY_ANALYZER}
+            />
+            <TooltipButton
+              testId="Change position"
+              tooltip="Change position"
+              ariaLabel="Change position"
+              className="p-2 border border-gray-400 rounded-lg"
+              onClick={() => setIsReversed(!isReversed)}
+            >
+              <BsReverseLayoutTextWindowReverse />
+            </TooltipButton>
+          </div>
           <div className="flex h-full overflow-auto">{renderMain()}</div>
 
-          <Controls
-            setSecurityOpen={onSecurityModalOpen}
-            showSecurityLock={!!settings?.SECURITY_ANALYZER}
-          />
           {settings && (
             <Security
               isOpen={securityModalIsOpen}

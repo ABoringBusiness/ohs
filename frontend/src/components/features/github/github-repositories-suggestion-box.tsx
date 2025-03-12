@@ -66,7 +66,7 @@ export function GitHubRepositoriesSuggestionBox({
             testId="connect-to-github"
             type="button"
             variant="secondary"
-            className="w-full text-content border-content"
+            className="w-full text-black dark:text-white border-black dark:border-white"
             onClick={handleConnectToGitHub}
             startContent={<GitHubLogo width={20} height={20} />}
           >

@@ -48,7 +48,12 @@ export function TooltipButton({
   );
 
   return (
-    <Tooltip content={tooltip} closeDelay={100} placement="right">
+    <Tooltip
+      content={tooltip}
+      closeDelay={100}
+      placement="right"
+      className="text-white"
+    >
       {content}
     </Tooltip>
   );

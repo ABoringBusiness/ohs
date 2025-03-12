@@ -27,7 +27,7 @@ export function ActionTooltip({ type, onClick }: ActionTooltipProps) {
             ? t(I18nKey.ACTION$CONFIRM)
             : t(I18nKey.ACTION$REJECT)
         }
-        className="bg-tertiary rounded-full p-1 hover:bg-base-secondary"
+        className="bg-tertiary dark:bg-tertiary-dark rounded-full p-1 hover:bg-base-secondary dark:bg-base-secondary-dark"
         onClick={onClick}
       >
         {type === "confirm" ? <ConfirmIcon /> : <RejectIcon />}

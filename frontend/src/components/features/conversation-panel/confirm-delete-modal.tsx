@@ -17,7 +17,7 @@ export function ConfirmDeleteModal({
 }: ConfirmDeleteModalProps) {
   return (
     <ModalBackdrop>
-      <ModalBody className="items-start border border-tertiary">
+      <ModalBody className="items-start border border-tertiary dark:border-tertiary-dark">
         <div className="flex flex-col gap-2">
           <BaseModalTitle title="Are you sure you want to delete this project?" />
           <BaseModalDescription description="All data associated with this project will be lost." />
