@@ -12,7 +12,9 @@ from openhands.server.conversation_manager.conversation_manager import (
 from openhands.server.monitoring import MonitoringListener
 from openhands.storage import get_file_store
 from openhands.storage.conversation.conversation_store import ConversationStore
+from openhands.storage.conversation.supabase_conversation_store import SupabaseConversationStore
 from openhands.storage.settings.settings_store import SettingsStore
+from openhands.storage.settings.supabase_settings_store import SupabaseSettingsStore
 from openhands.utils.import_utils import get_impl
 
 load_dotenv()
@@ -56,9 +58,17 @@ else:
         sio, config, file_store, monitoring_listener
     )
 
-SettingsStoreImpl = get_impl(SettingsStore, server_config.settings_store_class)  # type: ignore
+# Determine which settings store to use
+if os.environ.get("USE_SUPABASE_STORAGE", "").lower() == "true" or server_config.settings_store_class == "supabase":
+    SettingsStoreImpl = SupabaseSettingsStore
+else:
+    SettingsStoreImpl = get_impl(SettingsStore, server_config.settings_store_class)  # type: ignore
 
-ConversationStoreImpl = get_impl(
-    ConversationStore,  # type: ignore
-    server_config.conversation_store_class,
-)
+# Determine which conversation store to use
+if os.environ.get("USE_SUPABASE_STORAGE", "").lower() == "true" or server_config.conversation_store_class == "supabase":
+    ConversationStoreImpl = SupabaseConversationStore
+else:
+    ConversationStoreImpl = get_impl(
+        ConversationStore,  # type: ignore
+        server_config.conversation_store_class,
+    )
