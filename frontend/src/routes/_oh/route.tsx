@@ -1,15 +1,15 @@
 import React from "react";
-import { useRouteError, isRouteErrorResponse, Outlet } from "react-router";
-import i18n from "#/i18n";
-import { useGitHubAuthUrl } from "#/hooks/use-github-auth-url";
-import { useIsAuthed } from "#/hooks/query/use-is-authed";
-import { useConfig } from "#/hooks/query/use-config";
-import { Sidebar } from "#/components/features/sidebar/sidebar";
-import { WaitlistModal } from "#/components/features/waitlist/waitlist-modal";
+import { isRouteErrorResponse, Outlet, useRouteError } from "react-router";
 import { AnalyticsConsentFormModal } from "#/components/features/analytics/analytics-consent-form-modal";
-import { useSettings } from "#/hooks/query/use-settings";
+import NewSidebar from "#/components/features/sidebar/new-sidebar";
+import { WaitlistModal } from "#/components/features/waitlist/waitlist-modal";
 import { useAuth } from "#/context/auth-context";
+import { useConfig } from "#/hooks/query/use-config";
+import { useIsAuthed } from "#/hooks/query/use-is-authed";
+import { useSettings } from "#/hooks/query/use-settings";
+import { useGitHubAuthUrl } from "#/hooks/use-github-auth-url";
 import { useMigrateUserConsent } from "#/hooks/use-migrate-user-consent";
+import i18n from "#/i18n";
 
 export function ErrorBoundary() {
   const error = useRouteError();
@@ -93,7 +93,7 @@ export default function MainApp() {
       data-testid="root-layout"
       className="bg-base dark:bg-base-dark p-3 h-screen md:min-w-[1024px] overflow-x-hidden flex flex-col md:flex-row gap-3"
     >
-      <Sidebar />
+      <NewSidebar />
 
       <div
         id="root-outlet"
