@@ -10,7 +10,7 @@ function SnackPreview({ snackId = "" }) {
       <div className="flex-1 flex justify-center">
         <div className="w-[266px] h-[564px] max-w-[300px] max-h-[652px] bg-white rounded-[40px] overflow-hidden flex flex-col text-black shadow-lg">
           <iframe
-            src="https://j-fqgls-anonymous-8081.exp.direct"
+            src="https://homefinder-j3uuk.rork.app/"
             title="Snack Preview"
             className="w-full h-full border-0"
             allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
