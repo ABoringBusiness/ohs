@@ -120,7 +120,7 @@ export function ChatInterface() {
     curAgentState === AgentState.FINISHED;
 
   return (
-    <div className="h-full flex flex-col justify-between bg-base-secondary-dark dark:bg-base-secondary">
+    <div className="h-full flex flex-col justify-between bg-base-secondary-dark dark:bg-base-secondary border border-s-gray-400 rounded-md">
       {messages.length === 0 && (
         <ChatSuggestions onSuggestionsClick={setMessageToSend} />
       )}

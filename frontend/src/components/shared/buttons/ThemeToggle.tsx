@@ -39,7 +39,7 @@ export default function ThemeToggle({ label, isExpanded }: ThemeToggleProps) {
         {darkMode ? (
           <MdOutlineLightMode size={24} />
         ) : (
-          <MdOutlineDarkMode size={24} fill="#9099ac" />
+          <MdOutlineDarkMode size={24} />
         )}
         {label && <span className="ml-2">{label}</span>}
       </div>
