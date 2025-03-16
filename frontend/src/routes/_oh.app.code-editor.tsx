@@ -1,9 +1,10 @@
 import React from "react";
-import { useTranslation } from "react-i18next";
+import { useParams } from "react-router";
 import CodeEditor from "#/components/features/code-editor/code-editor";
 
 export default function CodeEditorRoute() {
-  const { t } = useTranslation();
+  // Get the conversation ID from the URL params
+  useParams();
 
   return (
     <div className="flex h-full w-full flex-col">
