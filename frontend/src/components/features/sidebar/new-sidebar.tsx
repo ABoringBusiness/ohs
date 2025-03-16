@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FaHome, FaListUl } from "react-icons/fa";
+import { VscCode } from "react-icons/vsc";
 import { NavLink } from "react-router";
 import posthog from "posthog-js";
 import ThemeToggle from "#/components/shared/buttons/ThemeToggle";
@@ -55,6 +56,11 @@ export default function NewSidebar() {
       label: "Conversations",
       notActive: true,
       onClick: () => setConversationPanelIsOpen((prev) => !prev),
+    },
+    {
+      icon: <VscCode size={24} />,
+      label: "Code Editor",
+      path: "/conversations/new/code-editor",
     },
     {
       icon: <DocsIcon width={28} height={28} />,
