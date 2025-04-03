@@ -1,5 +1,6 @@
 import warnings
 from contextlib import asynccontextmanager
+import os
 
 with warnings.catch_warnings():
     warnings.simplefilter('ignore')
@@ -7,9 +8,12 @@ with warnings.catch_warnings():
 from fastapi import (
     FastAPI,
 )
+from fastapi.middleware.cors import CORSMiddleware
 
 import openhands.agenthub  # noqa F401 (we import this to get the agents registered)
 from openhands import __version__
+from openhands.server.middleware_supabase import SupabaseAuthMiddleware
+from openhands.server.routes.auth import app as auth_api_router
 from openhands.server.routes.conversation import app as conversation_api_router
 from openhands.server.routes.feedback import app as feedback_api_router
 from openhands.server.routes.files import app as files_api_router
@@ -37,13 +41,27 @@ app = FastAPI(
     lifespan=_lifespan,
 )
 
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allow all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all methods
+    allow_headers=["*"],  # Allow all headers
+)
+
+# Add Supabase authentication middleware
+app.add_middleware(SupabaseAuthMiddleware)
+
 
 @app.get('/health')
 async def health():
     return 'OK'
 
 
+# Include all routers
 app.include_router(public_api_router)
+app.include_router(auth_api_router)  # Add the new auth router
 app.include_router(files_api_router)
 app.include_router(security_api_router)
 app.include_router(feedback_api_router)
