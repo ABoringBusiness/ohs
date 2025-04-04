@@ -1,0 +1,47 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: openhands
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  description: OpenHands AI Assistant Project
+  
+  # Project sources
+  sourceRepos:
+    - 'https://github.com/openhands/ohs.git'
+  
+  # Destinations that applications within this project can deploy to
+  destinations:
+    - namespace: openhands
+      server: https://kubernetes.default.svc
+    - namespace: openhands-staging
+      server: https://kubernetes.default.svc
+  
+  # Cluster resources that applications in this project can use
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  
+  # Namespace resources that applications in this project can use
+  namespaceResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  
+  # Roles that users can use to access this project
+  roles:
+    - name: admin
+      description: Admin role for the OpenHands project
+      policies:
+        - p, proj:openhands:admin, applications, *, openhands/*, allow
+      groups:
+        - openhands-admins
+    
+    - name: developer
+      description: Developer role for the OpenHands project
+      policies:
+        - p, proj:openhands:developer, applications, get, openhands/*, allow
+        - p, proj:openhands:developer, applications, sync, openhands/*, allow
+      groups:
+        - openhands-developers
