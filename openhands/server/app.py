@@ -21,6 +21,7 @@ from openhands.server.routes.github import app as github_api_router
 from openhands.server.routes.manage_conversations import (
     app as manage_conversation_api_router,
 )
+from openhands.server.routes.marketplace import app as marketplace_api_router
 from openhands.server.routes.memory import app as memory_api_router
 from openhands.server.routes.public import app as public_api_router
 from openhands.server.routes.security import app as security_api_router
@@ -83,3 +84,4 @@ app.include_router(settings_router)
 app.include_router(github_api_router)
 app.include_router(trajectory_router)
 app.include_router(memory_api_router)  # Add the memory management router
+app.include_router(marketplace_api_router)  # Add the agent marketplace router
