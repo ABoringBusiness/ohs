@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { FaListUl } from "react-icons/fa";
 import { MdArrowForwardIos, MdArrowBackIos } from "react-icons/md";
+import { BsCodeSquare } from "react-icons/bs";
 import { useDispatch } from "react-redux";
 import { NavLink, useLocation } from "react-router";
 import { AllHandsLogoButton } from "#/components/shared/buttons/all-hands-logo-button";
@@ -118,6 +119,26 @@ export function Sidebar() {
               </TooltipButton>
             </div>
             <DocsButton label={isExpanded ? "Documentation" : undefined} />
+            <NavLink
+              to="/visual-builder"
+              className={({ isActive }) =>
+                `${isActive ? "text-white" : "text-[#9099AC]"} flex items-center`
+              }
+            >
+              <TooltipButton
+                testId="visual-builder"
+                tooltip="Visual Builder"
+                ariaLabel="Visual Builder"
+              >
+                <div className="flex items-center">
+                  <BsCodeSquare
+                    size={22}
+                    className="text-[#9099AC]"
+                  />
+                  {isExpanded && <span className="ml-2">Visual Builder</span>}
+                </div>
+              </TooltipButton>
+            </NavLink>
           </div>
 
           <div
