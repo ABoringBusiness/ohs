@@ -12,6 +12,7 @@ export default [
       index("routes/account-settings.tsx"),
       route("billing", "routes/billing.tsx"),
     ]),
+    route("visual-builder", "routes/visual-builder.tsx"),
     route("conversations/:conversationId", "routes/_oh.app/route.tsx", [
       index("routes/_oh.app._index/route.tsx"),
       route("browser", "routes/_oh.app.browser.tsx"),
