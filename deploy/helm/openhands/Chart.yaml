@@ -1,0 +1,23 @@
+apiVersion: v2
+name: openhands
+description: A Helm chart for OpenHands AI Assistant
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+keywords:
+  - ai
+  - assistant
+  - openhands
+home: https://github.com/openhands/ohs
+maintainers:
+  - name: OpenHands Team
+    email: support@openhands.ai
+dependencies:
+  - name: postgresql
+    version: ~12.5.1
+    repository: https://charts.bitnami.com/bitnami
+    condition: postgresql.enabled
+  - name: redis
+    version: ~17.11.3
+    repository: https://charts.bitnami.com/bitnami
+    condition: redis.enabled

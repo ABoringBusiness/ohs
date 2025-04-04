@@ -1,0 +1,134 @@
+# Default values for OpenHands
+# This is a YAML-formatted file.
+
+replicaCount: 1
+
+image:
+  repository: openhands/ohs
+  pullPolicy: IfNotPresent
+  tag: ""  # Defaults to appVersion in Chart.yaml
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8000
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: openhands.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: openhands-tls
+  #    hosts:
+  #      - openhands.local
+
+resources: {}
+  # limits:
+  #   cpu: 1000m
+  #   memory: 1Gi
+  # requests:
+  #   cpu: 500m
+  #   memory: 512Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+# Application configuration
+config:
+  # Environment variables for the application
+  env:
+    # General settings
+    DEBUG: "false"
+    LOG_LEVEL: "info"
+    
+    # API settings
+    API_HOST: "0.0.0.0"
+    API_PORT: "8000"
+    
+    # Supabase settings
+    SUPABASE_URL: ""
+    SUPABASE_KEY: ""
+    SUPABASE_JWT_SECRET: ""
+    
+    # OpenAI settings
+    OPENAI_API_KEY: ""
+    OPENAI_MODEL: "gpt-4o"
+    
+    # Redis settings
+    REDIS_URL: ""
+    
+    # Storage settings
+    STORAGE_TYPE: "supabase"
+    
+  # Secret environment variables (will be stored in a Kubernetes Secret)
+  secrets:
+    SUPABASE_URL: ""
+    SUPABASE_KEY: ""
+    SUPABASE_JWT_SECRET: ""
+    OPENAI_API_KEY: ""
+    REDIS_PASSWORD: ""
+
+# PostgreSQL configuration
+postgresql:
+  enabled: true
+  auth:
+    username: openhands
+    password: ""  # Will be auto-generated if not provided
+    database: openhands
+  primary:
+    persistence:
+      enabled: true
+      size: 10Gi
+
+# Redis configuration
+redis:
+  enabled: true
+  auth:
+    password: ""  # Will be auto-generated if not provided
+  master:
+    persistence:
+      enabled: true
+      size: 5Gi
