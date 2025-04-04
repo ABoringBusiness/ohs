@@ -40,6 +40,8 @@ import { RootState } from "#/store";
 import { MobileLabel } from "#/components/layout/mobile-label";
 import { TooltipButton } from "#/components/shared/buttons/tooltip-button";
 import { AutoLoginModal } from "#/components/auth/AutoLoginModal";
+import { SocketProvider } from "#/context/socket-context";
+import { RealTimeNotifications } from "#/components/features/notifications/RealTimeNotifications";
 
 function AppContent() {
   useConversationConfig();
@@ -225,6 +227,9 @@ function AppContent() {
           {/* Auto Login Modal */}
           <AutoLoginModal delay={2000} />
 
+          {/* Real-time notifications */}
+          <RealTimeNotifications />
+
           {settings && (
             <Security
               isOpen={securityModalIsOpen}
@@ -241,7 +246,9 @@ function AppContent() {
 function App() {
   return (
     <ConversationProvider>
-      <AppContent />
+      <SocketProvider>
+        <AppContent />
+      </SocketProvider>
     </ConversationProvider>
   );
 }

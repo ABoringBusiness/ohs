@@ -26,12 +26,20 @@ from openhands.server.routes.security import app as security_api_router
 from openhands.server.routes.settings import app as settings_router
 from openhands.server.routes.trajectory import app as trajectory_router
 from openhands.server.shared import conversation_manager
+from openhands.server.socketio_server import setup_socketio
+from openhands.storage.supabase_realtime import setup_realtime_listeners, cleanup_realtime_listeners
 
 
 @asynccontextmanager
 async def _lifespan(app: FastAPI):
+    # Set up Supabase realtime listeners
+    await setup_realtime_listeners()
+    
     async with conversation_manager:
         yield
+    
+    # Clean up Supabase realtime listeners
+    await cleanup_realtime_listeners()
 
 
 app = FastAPI(
@@ -52,6 +60,9 @@ app.add_middleware(
 
 # Add Supabase authentication middleware
 app.add_middleware(SupabaseAuthMiddleware)
+
+# Set up Socket.io
+setup_socketio(app)
 
 
 @app.get('/health')
