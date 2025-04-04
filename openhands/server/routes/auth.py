@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Depends, HTTPException, Request, status
+import os
+from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
+from fastapi.responses import RedirectResponse
 from pydantic import BaseModel, EmailStr
 
 from openhands.server.auth_supabase import User, get_current_user
@@ -25,6 +27,11 @@ class AuthResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"
     user: User
+
+
+class GoogleSignInResponse(BaseModel):
+    """Response model for Google sign-in."""
+    url: str
 
 
 @app.post("/signup", response_model=AuthResponse)
@@ -120,6 +127,137 @@ async def signin(request: SignInRequest):
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=f"Authentication failed: {str(e)}",
         )
+
+
+@app.get("/google/signin", response_model=GoogleSignInResponse)
+async def google_signin(request: Request):
+    """
+    Get the Google OAuth URL for sign-in.
+    
+    Args:
+        request: The FastAPI request object.
+        
+    Returns:
+        The Google OAuth URL.
+        
+    Raises:
+        HTTPException: If Google sign-in fails.
+    """
+    try:
+        supabase = get_supabase_client()
+        
+        # Get the redirect URL
+        redirect_url = str(request.url_for("google_callback"))
+        
+        # Get the Google OAuth URL
+        auth_response = supabase.auth.sign_in_with_oauth({
+            "provider": "google",
+            "options": {
+                "redirect_to": redirect_url,
+            },
+        })
+        
+        if not auth_response.url:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Failed to get Google OAuth URL",
+            )
+        
+        # Return the Google OAuth URL
+        return GoogleSignInResponse(url=auth_response.url)
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Google sign-in failed: {str(e)}",
+        )
+
+
+@app.get("/google/callback", name="google_callback")
+async def google_callback(code: str, request: Request):
+    """
+    Handle the Google OAuth callback.
+    
+    Args:
+        code: The authorization code from Google.
+        request: The FastAPI request object.
+        
+    Returns:
+        A redirect to the frontend with the authentication data.
+        
+    Raises:
+        HTTPException: If Google callback fails.
+    """
+    try:
+        supabase = get_supabase_client()
+        
+        # Exchange the authorization code for a session
+        session = supabase.auth.exchange_code_for_session(code)
+        
+        if not session or not session.user:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Failed to exchange code for session",
+            )
+        
+        # Create a user object
+        user = User(
+            id=session.user.id,
+            email=session.user.email,
+            name=session.user.user_metadata.get("name") if session.user.user_metadata else None,
+        )
+        
+        # Create an HTML page that sends a message to the opener window
+        html_content = f"""
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Authentication Successful</title>
+            <script>
+                window.onload = function() {{
+                    window.opener.postMessage({{
+                        type: "GOOGLE_LOGIN_SUCCESS",
+                        token: "{session.access_token}",
+                        user: {user.model_dump_json()}
+                    }}, window.location.origin);
+                    window.close();
+                }};
+            </script>
+        </head>
+        <body>
+            <h1>Authentication Successful</h1>
+            <p>You can close this window now.</p>
+        </body>
+        </html>
+        """
+        
+        # Return the HTML page
+        return Response(content=html_content, media_type="text/html")
+    except Exception as e:
+        # Return an error page
+        html_content = f"""
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Authentication Failed</title>
+            <script>
+                window.onload = function() {{
+                    window.opener.postMessage({{
+                        type: "GOOGLE_LOGIN_ERROR",
+                        error: "{str(e)}"
+                    }}, window.location.origin);
+                    window.close();
+                }};
+            </script>
+        </head>
+        <body>
+            <h1>Authentication Failed</h1>
+            <p>Error: {str(e)}</p>
+            <p>You can close this window now.</p>
+        </body>
+        </html>
+        """
+        
+        return Response(content=html_content, media_type="text/html")
 
 
 @app.post("/signout")

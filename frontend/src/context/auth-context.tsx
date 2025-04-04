@@ -11,6 +11,7 @@ interface AuthContextType {
   user: User | null;
   token: string | null;
   login: (email: string, password: string) => Promise<void>;
+  loginWithGoogle: () => Promise<void>;
   signup: (email: string, password: string, name?: string) => Promise<void>;
   logout: () => Promise<void>;
   
@@ -79,6 +80,69 @@ function AuthProvider({ children, initialGithubTokenIsSet }: AuthContextProps) {
     }
   };
 
+  const loginWithGoogle = async () => {
+    try {
+      // Redirect to Google OAuth login
+      const response = await fetch("/api/auth/google/signin", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.detail || "Google login failed");
+      }
+      
+      const data = await response.json();
+      
+      // Open the Google OAuth URL in a popup window
+      const popup = window.open(
+        data.url,
+        "googleLogin",
+        "width=500,height=600,left=0,top=0"
+      );
+      
+      // Listen for messages from the popup window
+      const receiveMessage = (event: MessageEvent) => {
+        // Verify the origin of the message
+        if (event.origin !== window.location.origin) return;
+        
+        if (event.data.type === "GOOGLE_LOGIN_SUCCESS") {
+          // Store authentication data
+          localStorage.setItem("auth_token", event.data.token);
+          localStorage.setItem("auth_user", JSON.stringify(event.data.user));
+          
+          setToken(event.data.token);
+          setUser(event.data.user);
+          setIsAuthenticated(true);
+          setGitHubTokenIsSet(true); // For backward compatibility
+          
+          // Close the popup
+          if (popup) popup.close();
+          
+          // Remove the event listener
+          window.removeEventListener("message", receiveMessage);
+        }
+      };
+      
+      window.addEventListener("message", receiveMessage);
+      
+      // Set a timeout to remove the event listener if the popup is closed
+      const checkPopupClosed = setInterval(() => {
+        if (popup && popup.closed) {
+          clearInterval(checkPopupClosed);
+          window.removeEventListener("message", receiveMessage);
+        }
+      }, 1000);
+      
+    } catch (error) {
+      console.error("Google login error:", error);
+      throw error;
+    }
+  };
+
   const signup = async (email: string, password: string, name?: string) => {
     try {
       const response = await fetch("/api/auth/signup", {
@@ -142,6 +206,7 @@ function AuthProvider({ children, initialGithubTokenIsSet }: AuthContextProps) {
       user,
       token,
       login,
+      loginWithGoogle,
       signup,
       logout,
       

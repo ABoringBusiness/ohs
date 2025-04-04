@@ -39,6 +39,7 @@ import { clearFiles, clearInitialPrompt } from "#/state/initial-query-slice";
 import { RootState } from "#/store";
 import { MobileLabel } from "#/components/layout/mobile-label";
 import { TooltipButton } from "#/components/shared/buttons/tooltip-button";
+import { AutoLoginModal } from "#/components/auth/AutoLoginModal";
 
 function AppContent() {
   useConversationConfig();
@@ -220,6 +221,9 @@ function AppContent() {
             </TooltipButton>
           </div>
           <div className="flex h-full overflow-auto">{renderMain()}</div>
+
+          {/* Auto Login Modal */}
+          <AutoLoginModal delay={2000} />
 
           {settings && (
             <Security
