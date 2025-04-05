@@ -1,8 +1,8 @@
-import React from "react";
-import { ChatInput } from "./chat-input";
 import { cn } from "#/utils/utils";
+import React from "react";
 import { ImageCarousel } from "../images/image-carousel";
 import { UploadImageInput } from "../images/upload-image-input";
+import { ChatInput } from "./chat-input";
 
 interface InteractiveChatBoxProps {
   isDisabled?: boolean;
@@ -74,7 +74,9 @@ export function InteractiveChatBox({
           value={value}
           onImagePaste={handleUpload}
           className="py-[10px] bg-tertiary-dark dark:bg-tertiary"
-          buttonClassName="py-[10px]"
+          buttonClassName="py-[10px] flex flex-row"
+          showVoice
+          showMakeCalls
         />
       </div>
     </div>

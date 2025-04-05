@@ -1,29 +1,39 @@
-import React, { useState, useRef, useEffect } from "react";
-import { FaHome, FaListUl } from "react-icons/fa";
-import { NavLink } from "react-router";
-import posthog from "posthog-js";
+import SettingIcon from "#/assets/icons/9054312_bx_cog_icon.svg?react";
 import ThemeToggle from "#/components/shared/buttons/ThemeToggle";
 import { AllHandsLogoButton } from "#/components/shared/buttons/all-hands-logo-button";
-import DocsIcon from "#/icons/academy.svg?react";
-import { cn } from "#/utils/utils";
-import { ConversationPanel } from "../conversation-panel/conversation-panel";
-import { ConversationPanelWrapper } from "../conversation-panel/conversation-panel-wrapper";
-import SettingsIcon from "#/icons/settings.svg?react";
-import { UserActions } from "./user-actions";
-import { useGitHubUser } from "#/hooks/query/use-github-user";
-import { useConfig } from "#/hooks/query/use-config";
 import { useCurrentSettings } from "#/context/settings-context";
 import { useLogout } from "#/hooks/mutation/use-logout";
+import { useConfig } from "#/hooks/query/use-config";
+import { useGitHubUser } from "#/hooks/query/use-github-user";
+import DocsIcon from "#/icons/academy.svg?react";
+import { cn } from "#/utils/utils";
+import posthog from "posthog-js";
+import React, { useEffect, useRef, useState } from "react";
+import { FaDollarSign, FaHome, FaListUl } from "react-icons/fa";
+import { NavLink } from "react-router";
+import { ConversationPanel } from "../conversation-panel/conversation-panel";
+import { ConversationPanelWrapper } from "../conversation-panel/conversation-panel-wrapper";
+import PricingModel from "../pricing-model/pricing-model";
+import SettingsModel from "../settings-model/settings-model";
+import { UserActions } from "./user-actions";
 
 export default function NewSidebar() {
   const [conversationPanelIsOpen, setConversationPanelIsOpen] =
     React.useState(false);
+  const [conversationPanelIsHover, setConversationPanelIsHover] =
+    React.useState(false);
+  const [settingsIsOpen, setSettingsIsOpen] = React.useState(false);
+  const [pricingModelIsOpen, setPricingModelIsOpen] = React.useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
   const user = useGitHubUser();
   const { data: config } = useConfig();
   const { saveUserSettings } = useCurrentSettings();
   const { mutateAsync: logout } = useLogout();
+
+  const conversationPanelIsHoverRef = useRef<boolean>(false);
+
+  conversationPanelIsHoverRef.current = conversationPanelIsHover;
 
   const handleLogout = async () => {
     if (config?.APP_MODE === "saas") await logout();
@@ -55,16 +65,32 @@ export default function NewSidebar() {
       label: "Conversations",
       notActive: true,
       onClick: () => setConversationPanelIsOpen((prev) => !prev),
+      onMouseEnter: () => {
+        setConversationPanelIsHover(true);
+      },
+      onMouseLeave: () => {
+        setConversationPanelIsHover(false);
+      },
     },
     {
       icon: <DocsIcon width={28} height={28} />,
       label: "Documentation",
       path: "https://docs.all-hands.dev",
     },
+
     {
-      icon: <SettingsIcon width={28} height={28} />,
+      icon: <SettingIcon width={28} height={28} fill="currentColor" />,
       label: "Settings",
-      path: "/settings",
+      notActive: true,
+      onClick: () => {
+        setSettingsIsOpen(true);
+      },
+    },
+    {
+      icon: <FaDollarSign width={28} height={28} />,
+      label: "Pricing",
+      notActive: true,
+      onClick: () => setPricingModelIsOpen((prev) => !prev),
     },
   ];
 
@@ -108,6 +134,8 @@ export default function NewSidebar() {
                   )
                 }
                 onClick={item?.onClick}
+                onMouseEnter={item.onMouseEnter}
+                onMouseLeave={item.onMouseLeave}
                 style={{
                   marginTop: item.label === "Settings" ? "auto" : "",
                 }}
@@ -182,12 +210,33 @@ export default function NewSidebar() {
         </div>
       </nav>
 
-      {conversationPanelIsOpen && (
-        <ConversationPanelWrapper isOpen={conversationPanelIsOpen}>
+      {(conversationPanelIsOpen || conversationPanelIsHover) && (
+        <ConversationPanelWrapper
+          isOpen={conversationPanelIsOpen || conversationPanelIsHover}
+        >
           <ConversationPanel
-            onClose={() => setConversationPanelIsOpen(false)}
+            onClose={() => {
+              if (conversationPanelIsHoverRef.current) {
+                return;
+              }
+              setConversationPanelIsOpen(false);
+            }}
           />
         </ConversationPanelWrapper>
+      )}
+      {pricingModelIsOpen && (
+        <ConversationPanelWrapper isOpen={pricingModelIsOpen}>
+          <PricingModel
+            open={pricingModelIsOpen}
+            onClose={() => setPricingModelIsOpen(false)}
+          />
+        </ConversationPanelWrapper>
+      )}
+      {settingsIsOpen && (
+        <SettingsModel
+          open={settingsIsOpen}
+          onclose={() => setSettingsIsOpen(false)}
+        />
       )}
     </>
   );
