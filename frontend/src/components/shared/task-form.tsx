@@ -1,18 +1,20 @@
-import React from "react";
-import { useNavigation } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "#/store";
-import { addFile, removeFile } from "#/state/initial-query-slice";
-import { SuggestionBubble } from "#/components/features/suggestions/suggestion-bubble";
-import { SUGGESTIONS } from "#/utils/suggestions";
-import { convertImageToBase64 } from "#/utils/convert-image-to-base-64";
 import { ChatInput } from "#/components/features/chat/chat-input";
-import { getRandomKey } from "#/utils/get-random-key";
-import { cn } from "#/utils/utils";
-import { AttachImageLabel } from "../features/images/attach-image-label";
-import { ImageCarousel } from "../features/images/image-carousel";
-import { UploadImageInput } from "../features/images/upload-image-input";
+import { SuggestionBubble } from "#/components/features/suggestions/suggestion-bubble";
 import { useCreateConversation } from "#/hooks/mutation/use-create-conversation";
+import { addFile, removeFile } from "#/state/initial-query-slice";
+import { RootState } from "#/store";
+import { convertImageToBase64 } from "#/utils/convert-image-to-base-64";
+import { getRandomKey } from "#/utils/get-random-key";
+import { SUGGESTIONS } from "#/utils/suggestions";
+import { cn } from "#/utils/utils";
+import React, { useState } from "react";
+import { BsEye, BsEyeSlash } from "react-icons/bs";
+import { FaInstagram } from "react-icons/fa";
+import { FaWandMagicSparkles } from "react-icons/fa6";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigation } from "react-router";
+import { ImageCarousel } from "../features/images/image-carousel";
+import { UploadImageInputV2 } from "../features/images/upload-image-input";
 import { LoadingSpinner } from "./loading-spinner";
 
 interface TaskFormProps {
@@ -30,7 +32,8 @@ export function TaskForm({ ref }: TaskFormProps) {
     const key = getRandomKey(SUGGESTIONS["non-repo"]);
     return { key, value: SUGGESTIONS["non-repo"][key] };
   });
-  const [inputIsFocused, setInputIsFocused] = React.useState(false);
+  const [setInputIsFocused] = React.useState(false);
+  const [isPrivate, setIsPrivate] = useState<boolean>(false);
   const { mutate: createConversation, isPending } = useCreateConversation();
 
   const onRefreshSuggestion = () => {
@@ -67,55 +70,121 @@ export function TaskForm({ ref }: TaskFormProps) {
           onClick={onClickSuggestion}
           onRefresh={onRefreshSuggestion}
         />
-        <div
-          className={cn(
-            "border border-neutral-600 px-4 rounded-lg text-[17px] leading-5 w-full transition-colors duration-200",
-            inputIsFocused
-              ? "bg-neutral-600"
-              : "bg-tertiary dark:bg-tertiary-dark",
-            "hover:border-neutral-500 focus-within:border-neutral-500",
-          )}
-        >
-          {isPending ? (
-            <div className="flex justify-center py-[17px]">
-              <LoadingSpinner size="small" />
+        <div className="relative p-2 w-full ">
+          <div className="absolute inset-0 shadow-[0_0_10px_4px] shadow-red-400 rounded-lg bg-gradient-to-r from-fuchsia-600 via-red-500 to-blue-700 "></div>
+          <div className="relative bg-white rounded-lg shadow-lg">
+            <div
+              className={cn(
+                "flex items-center px-4 rounded-lg text-[17px] leading-5 w-full transition-colors duration-200",
+                "bg-white ",
+              )}
+            >
+              <div className="flex pl-3 items-center  gap-2 w-[160px] h-[30px] bg-gray-100 mr-2">
+                <FaInstagram className="text-[14px] text-black" />
+                <span className="text-[10px] text-black font-bold">
+                  Things I can do
+                </span>
+              </div>
+              {isPending ? (
+                <div className="flex justify-center py-[17px] ">
+                  <LoadingSpinner size="small" />
+                </div>
+              ) : (
+                <ChatInput
+                  name="q"
+                  onSubmit={() => {
+                    if (typeof ref !== "function")
+                      ref?.current?.requestSubmit();
+                  }}
+                  onChange={(message) => setText(message)}
+                  onImagePaste={async (imageFiles) => {
+                    const promises = imageFiles.map(convertImageToBase64);
+                    const base64Images = await Promise.all(promises);
+                    base64Images.forEach((base64) => {
+                      dispatch(addFile(base64));
+                    });
+                  }}
+                  value={text}
+                  maxRows={15}
+                  className="text-[17px] leading-5 py-[17px] "
+                  buttonClassName="pb-[15px] flex flex-row gap-2 items-center"
+                  disabled={navigation.state === "submitting" || !text}
+                  renderImageButton={() => (
+                    <div className="flex items-center gap-2 ">
+                      <FaWandMagicSparkles
+                        size={16}
+                        className="dark:text-black "
+                      />
+                      <UploadImageInputV2
+                        onUpload={async (uploadedFiles) => {
+                          const promises =
+                            uploadedFiles.map(convertImageToBase64);
+                          const base64Images = await Promise.all(promises);
+                          base64Images.forEach((base64) => {
+                            dispatch(addFile(base64));
+                          });
+                        }}
+                      />
+                    </div>
+                  )}
+                  inputType="two"
+                />
+              )}
             </div>
-          ) : (
-            <ChatInput
-              name="q"
-              onSubmit={() => {
-                if (typeof ref !== "function") ref?.current?.requestSubmit();
-              }}
-              onChange={(message) => setText(message)}
-              onFocus={() => setInputIsFocused(true)}
-              onBlur={() => setInputIsFocused(false)}
-              onImagePaste={async (imageFiles) => {
-                const promises = imageFiles.map(convertImageToBase64);
-                const base64Images = await Promise.all(promises);
-                base64Images.forEach((base64) => {
-                  dispatch(addFile(base64));
-                });
-              }}
-              value={text}
-              maxRows={15}
-              showButton={!!text}
-              className="text-[17px] leading-5 py-[17px]"
-              buttonClassName="pb-[17px]"
-              disabled={navigation.state === "submitting"}
-            />
-          )}
+            <div className="dark:bg-black bg-white text-[12px] text-white flex items-center justify-between px-4 rounded-sm dark:border-t-none border-t-1 border-black-700">
+              <div className="flex items-center gap-3">
+                <div className="p-1 rounded-sm">
+                  <FaInstagram
+                    size={16}
+                    className="dark:text-white text-black"
+                  />
+                </div>
+                <span className="font-medium dark:text-white text-black">
+                  AI Model &gt;&gt;
+                </span>
+              </div>
+
+              <div
+                className="flex items-center gap-2 cursor-pointer"
+                onClick={() => {
+                  setIsPrivate((prev) => !prev);
+                }}
+              >
+                {isPrivate ? (
+                  <BsEyeSlash
+                    size={16}
+                    className="dark:text-white text-black"
+                  />
+                ) : (
+                  <BsEye size={16} className="dark:text-white text-black" />
+                )}
+
+                <span className="font-medium dark:text-white text-black">
+                  {isPrivate ? "Private" : "Public"}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex justify-center gap-3 mt-3">
+          {[
+            "Text > Image",
+            "Text > Video",
+            "Text > Music",
+            "Text > App",
+            "Text > App",
+          ].map((text) => (
+            <div
+              key={text}
+              className="w-[170px] h-[55px] flex items-center justify-center text-medium dark:bg-white bg-black dark:text-black text-white border-5 border-black rounded-lg font-bold "
+            >
+              {text}
+            </div>
+          ))}
         </div>
       </form>
-      <UploadImageInput
-        onUpload={async (uploadedFiles) => {
-          const promises = uploadedFiles.map(convertImageToBase64);
-          const base64Images = await Promise.all(promises);
-          base64Images.forEach((base64) => {
-            dispatch(addFile(base64));
-          });
-        }}
-        label={<AttachImageLabel />}
-      />
+
       {files.length > 0 && (
         <ImageCarousel
           size="large"

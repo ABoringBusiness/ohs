@@ -1,16 +1,21 @@
-import React from "react";
-import TextareaAutosize from "react-textarea-autosize";
-import { useTranslation } from "react-i18next";
+import { StopButton } from "#/components/shared/buttons/stop-button";
+import {
+  SubmitButton,
+  SubmitButtonTwo,
+} from "#/components/shared/buttons/submit-button";
 import { I18nKey } from "#/i18n/declaration";
 import { cn } from "#/utils/utils";
-import { SubmitButton } from "#/components/shared/buttons/submit-button";
-import { StopButton } from "#/components/shared/buttons/stop-button";
-
+import React from "react";
+import { useTranslation } from "react-i18next";
+import TextareaAutosize from "react-textarea-autosize";
+import { MakeCalls } from "./make-calls";
+import SpeechToText from "./voice-assistant";
 interface ChatInputProps {
   name?: string;
   button?: "submit" | "stop";
   disabled?: boolean;
   showButton?: boolean;
+  showVoice?: boolean;
   value?: string;
   maxRows?: number;
   onSubmit: (message: string) => void;
@@ -21,6 +26,9 @@ interface ChatInputProps {
   onImagePaste?: (files: File[]) => void;
   className?: React.HTMLAttributes<HTMLDivElement>["className"];
   buttonClassName?: React.HTMLAttributes<HTMLButtonElement>["className"];
+  renderImageButton?: () => React.ReactNode;
+  inputType?: "one" | "two";
+  showMakeCalls?: boolean;
 }
 
 export function ChatInput({
@@ -28,6 +36,7 @@ export function ChatInput({
   button = "submit",
   disabled,
   showButton = true,
+  showVoice,
   value,
   maxRows = 4,
   onSubmit,
@@ -38,6 +47,9 @@ export function ChatInput({
   onImagePaste,
   className,
   buttonClassName,
+  renderImageButton,
+  inputType = "one",
+  showMakeCalls,
 }: ChatInputProps) {
   const { t } = useTranslation();
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
@@ -139,10 +151,31 @@ export function ChatInput({
         )}
       />
       {showButton && (
-        <div className={buttonClassName}>
-          {button === "submit" && (
-            <SubmitButton isDisabled={disabled} onClick={handleSubmitMessage} />
+        <div
+          className={buttonClassName}
+          style={{ display: "flex", gap: "10px", alignItems: "center" }}
+        >
+          {renderImageButton?.()}
+          {showMakeCalls && <MakeCalls />}
+          {showVoice && (
+            <SpeechToText
+              onSpeechToText={(text) => {
+                onChange?.(text ?? "");
+              }}
+            />
           )}
+          {button === "submit" &&
+            (inputType === "two" ? (
+              <SubmitButtonTwo
+                isDisabled={disabled}
+                onClick={handleSubmitMessage}
+              />
+            ) : (
+              <SubmitButton
+                isDisabled={disabled}
+                onClick={handleSubmitMessage}
+              />
+            ))}
           {button === "stop" && (
             <StopButton isDisabled={disabled} onClick={onStop} />
           )}
