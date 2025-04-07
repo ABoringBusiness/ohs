@@ -1,8 +1,8 @@
 import { useTranslation } from "react-i18next";
-import ThumbsUpIcon from "#/icons/thumbs-up.svg?react";
-import ThumbDownIcon from "#/icons/thumbs-down.svg?react";
-import ExportIcon from "#/icons/export.svg?react";
 import { TrajectoryActionButton } from "#/components/shared/buttons/trajectory-action-button";
+import ExportIcon from "#/icons/export.svg?react";
+import ThumbDownIcon from "#/icons/thumbs-down.svg?react";
+import ThumbsUpIcon from "#/icons/thumbs-up.svg?react";
 
 interface TrajectoryActionsProps {
   onPositiveFeedback: () => void;
@@ -26,7 +26,7 @@ export function TrajectoryActions({
           <ThumbsUpIcon
             width={15}
             height={15}
-            className="stroke-white dark:stroke-black"
+            className="dark:stroke-white stroke-black"
           />
         }
         tooltip={t("BUTTON$MARK_HELPFUL")}
@@ -38,7 +38,7 @@ export function TrajectoryActions({
           <ThumbDownIcon
             width={15}
             height={15}
-            className="stroke-white dark:stroke-black"
+            className="dark:stroke-white stroke-black"
           />
         }
         tooltip={t("BUTTON$MARK_NOT_HELPFUL")}
@@ -46,7 +46,13 @@ export function TrajectoryActions({
       <TrajectoryActionButton
         testId="export-trajectory"
         onClick={onExportTrajectory}
-        icon={<ExportIcon width={15} height={15} className="stroke-white" />}
+        icon={
+          <ExportIcon
+            width={15}
+            height={15}
+            className="dark:stroke-white stroke-black"
+          />
+        }
         tooltip={t("BUTTON$EXPORT_CONVERSATION")}
       />
     </div>

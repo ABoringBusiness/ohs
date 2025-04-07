@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 .button-base {
-  @apply bg-tertiary-dark border border-neutral-600 rounded;
+  @apply dark:bg-tertiary-dark bg-white  border border-neutral-600 rounded;
 }

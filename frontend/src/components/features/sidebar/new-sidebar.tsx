@@ -1,3 +1,7 @@
+import posthog from "posthog-js";
+import React, { useEffect, useRef, useState } from "react";
+import { FaDollarSign, FaHome, FaListUl } from "react-icons/fa";
+import { NavLink } from "react-router";
 import SettingIcon from "#/assets/icons/9054312_bx_cog_icon.svg?react";
 import ThemeToggle from "#/components/shared/buttons/ThemeToggle";
 import { AllHandsLogoButton } from "#/components/shared/buttons/all-hands-logo-button";
@@ -7,10 +11,6 @@ import { useConfig } from "#/hooks/query/use-config";
 import { useGitHubUser } from "#/hooks/query/use-github-user";
 import DocsIcon from "#/icons/academy.svg?react";
 import { cn } from "#/utils/utils";
-import posthog from "posthog-js";
-import React, { useEffect, useRef, useState } from "react";
-import { FaDollarSign, FaHome, FaListUl } from "react-icons/fa";
-import { NavLink } from "react-router";
 import { ConversationPanel } from "../conversation-panel/conversation-panel";
 import { ConversationPanelWrapper } from "../conversation-panel/conversation-panel-wrapper";
 import PricingModel from "../pricing-model/pricing-model";
@@ -215,6 +215,12 @@ export default function NewSidebar() {
           isOpen={conversationPanelIsOpen || conversationPanelIsHover}
         >
           <ConversationPanel
+            onMouseEnter={() => {
+              setConversationPanelIsHover(true);
+            }}
+            onMouseLeave={() => {
+              setConversationPanelIsHover(false);
+            }}
             onClose={() => {
               if (conversationPanelIsHoverRef.current) {
                 return;

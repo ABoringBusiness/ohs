@@ -1,16 +1,16 @@
-import React from "react";
-import { useTranslation } from "react-i18next";
 import {
   Autocomplete,
   AutocompleteItem,
   AutocompleteSection,
 } from "@heroui/react";
-import { useDispatch } from "react-redux";
 import posthog from "posthog-js";
-import { I18nKey } from "#/i18n/declaration";
-import { setSelectedRepository } from "#/state/initial-query-slice";
-import { useConfig } from "#/hooks/query/use-config";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 import { sanitizeQuery } from "#/utils/sanitize-query";
+import { setSelectedRepository } from "#/state/initial-query-slice";
+import { I18nKey } from "#/i18n/declaration";
+import { useConfig } from "#/hooks/query/use-config";
 
 interface GitHubRepositorySelectorProps {
   onInputChange: (value: string) => void;
@@ -99,7 +99,7 @@ export function GitHubRepositorySelector({
             <AutocompleteItem
               data-testid="github-repo-item"
               key={repo.id}
-              className="data-[selected=true]:bg-default-100"
+              className="data-[selected=true]:bg-default-100 text-white"
               textValue={repo.full_name}
             >
               {repo.full_name}
