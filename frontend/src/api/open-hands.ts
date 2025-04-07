@@ -281,6 +281,29 @@ class OpenHands {
     return data.redirect_url;
   }
 
+  static async createSubscription(planId: string): Promise<string> {
+    const { data } = await openHands.post(
+      "/api/billing/create-subscription",
+      null,
+      {
+        params: { plan_id: planId },
+      },
+    );
+    return data.redirect_url;
+  }
+
+  static async getSubscriptionPlans(): Promise<{ plans: Array<{
+    id: string;
+    name: string;
+    description: string;
+    price_id: string;
+    price: number;
+    features: string[];
+  }> }> {
+    const { data } = await openHands.get("/api/billing/plans");
+    return data;
+  }
+
   static async getBalance(): Promise<string> {
     const { data } = await openHands.get<{ credits: string }>(
       "/api/billing/credits",
