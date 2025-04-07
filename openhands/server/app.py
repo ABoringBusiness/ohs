@@ -14,6 +14,7 @@ import openhands.agenthub  # noqa F401 (we import this to get the agents registe
 from openhands import __version__
 from openhands.server.middleware_supabase import SupabaseAuthMiddleware
 from openhands.server.routes.auth import app as auth_api_router
+from openhands.server.routes.billing import app as billing_api_router
 from openhands.server.routes.conversation import app as conversation_api_router
 from openhands.server.routes.feedback import app as feedback_api_router
 from openhands.server.routes.files import app as files_api_router
@@ -73,6 +74,7 @@ async def health():
 # Include all routers
 app.include_router(public_api_router)
 app.include_router(auth_api_router)  # Add the new auth router
+app.include_router(billing_api_router)  # Add the billing router
 app.include_router(files_api_router)
 app.include_router(security_api_router)
 app.include_router(feedback_api_router)
