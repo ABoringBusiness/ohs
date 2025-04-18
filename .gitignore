@@ -196,6 +196,9 @@ test_results*
 frontend/build
 frontend/dist
 
+# bolt.diy frontend
+bolt_diy/
+
 # misc
 .DS_Store
 .env.local

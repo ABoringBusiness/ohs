@@ -1,8 +1,14 @@
 import os
+from enum import Enum, auto
 
 from openhands.core.logger import openhands_logger as logger
 from openhands.server.types import AppMode, ServerConfigInterface
 from openhands.utils.import_utils import get_impl
+
+
+class FrontendType(Enum):
+    DEFAULT = auto()
+    BOLT_DIY = auto()
 
 
 class ServerConfig(ServerConfigInterface):
@@ -18,6 +24,7 @@ class ServerConfig(ServerConfigInterface):
     )
     conversation_manager_class: str = 'openhands.server.conversation_manager.standalone_conversation_manager.StandaloneConversationManager'
     monitoring_listener_class: str = 'openhands.server.monitoring.MonitoringListener'
+    frontend_type = FrontendType.DEFAULT
 
     def verify_config(self):
         if self.config_cls:
@@ -28,6 +35,7 @@ class ServerConfig(ServerConfigInterface):
             'APP_MODE': self.app_mode,
             'GITHUB_CLIENT_ID': self.github_client_id,
             'POSTHOG_CLIENT_KEY': self.posthog_client_key,
+            'FRONTEND_TYPE': self.frontend_type.name,
         }
 
         return config
