@@ -20,6 +20,7 @@ class ServerConfigInterface(ABC):
     POSTHOG_CLIENT_KEY: ClassVar[str]
     GITHUB_CLIENT_ID: ClassVar[str]
     ATTACH_SESSION_MIDDLEWARE_PATH: ClassVar[str]
+    FRONTEND_TYPE: ClassVar[str]
 
     @abstractmethod
     def verify_config(self) -> None:
@@ -27,7 +28,7 @@ class ServerConfigInterface(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def get_config(self) -> dict[str, str]:
+    def get_config(self) -> dict[str, any]:
         """Configure attributes for frontend"""
         raise NotImplementedError
 

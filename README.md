@@ -58,6 +58,29 @@ docker run -it --rm --pull=always \
 
 You'll find OpenHands running at [http://localhost:3000](http://localhost:3000)!
 
+### Alternative Frontend
+
+OpenHands now supports an alternative frontend based on [bolt.diy](https://github.com/stackblitz-labs/bolt.diy). To use it:
+
+1. Clone the repository and build the project:
+   ```bash
+   git clone https://github.com/All-Hands-AI/OpenHands.git
+   cd OpenHands
+   make build
+   ```
+
+2. Build the bolt.diy frontend:
+   ```bash
+   make build-bolt-diy
+   ```
+
+3. Run OpenHands with the bolt.diy frontend:
+   ```bash
+   make run FRONTEND_TYPE=BOLT_DIY
+   ```
+
+You can switch between the default frontend and bolt.diy by setting the `FRONTEND_TYPE` environment variable to either `DEFAULT` or `BOLT_DIY`.
+
 Finally, you'll need a model provider and API key.
 [Anthropic's Claude 3.5 Sonnet](https://www.anthropic.com/api) (`anthropic/claude-3-5-sonnet-20241022`)
 works best, but you have [many options](https://docs.all-hands.dev/modules/usage/llms).

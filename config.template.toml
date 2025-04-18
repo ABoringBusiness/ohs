@@ -29,6 +29,9 @@ workspace_base = "./workspace"
 # Cache directory path
 #cache_dir = "/tmp/cache"
 
+# Frontend type (DEFAULT or BOLT_DIY)
+#frontend_type = "DEFAULT"
+
 # Reasoning effort for o1 models (low, medium, high, or not set)
 #reasoning_effort = "medium"
 
