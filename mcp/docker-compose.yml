@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  mcp-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./storage:/app/storage
+    environment:
+      - MCP_DEBUG=true
+      - MCP_HOST=0.0.0.0
+      - MCP_PORT=8000
+      - MCP_STORAGE_PATH=/app/storage
+      - OPENHANDS_API_URL=http://host.docker.internal:3000
+      - OPENHANDS_API_KEY=${OPENHANDS_API_KEY}
+    restart: unless-stopped
