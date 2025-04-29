@@ -1,0 +1,41 @@
+{
+  "name": "openhands-universal-sdk",
+  "version": "0.1.0",
+  "description": "Universal SDK for OpenHands AI Assistant - works with Next.js, Chrome Extensions, and bots",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "openhands",
+    "ai",
+    "assistant",
+    "sdk",
+    "nextjs",
+    "chrome-extension",
+    "bot",
+    "universal"
+  ],
+  "author": "OpenHands Team <support@openhands.ai>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/openhands/universal-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/openhands/universal-sdk/issues"
+  },
+  "homepage": "https://github.com/openhands/universal-sdk#readme",
+  "dependencies": {
+    "axios": "^1.8.4",
+    "cross-fetch": "^4.1.0",
+    "websocket-polyfill": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "typescript": "^5.8.2"
+  }
+}
